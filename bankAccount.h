@@ -11,7 +11,7 @@ public:
 	bankAccount(string customer, double openingBalance, date d) : holder {customer}, balance {openingBalance}, openDate {d}{
 		numAccounts++;
 		accountNum = numAccounts;
-		cout << customer << "opening account with balance " << openingBalance << endl;
+		cout << customer << " opening account with balance " << openingBalance << endl;
 	}
 	double getBal() const{
 		return balance;

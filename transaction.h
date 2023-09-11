@@ -4,12 +4,12 @@
 #include <string>
 #include <vector>
 
-#include "bankAccount.h"
 using namespace std;
 struct date{
     int day;
     int month;
     int year;
+    date(int day, int month, int year) : day {day}, month{month}, year {year} {}
     friend ostream &operator<< (ostream &os, const date d) {
         os << d.day << "/" << d.month << "/" << d.year;
         return os;
@@ -23,13 +23,14 @@ public:
 
     friend ostream &operator<< (ostream &os, const transaction t){
         os << t.transactionDate << "\t" << t.transType << "\t" << t.message << "\t" << t.amount << endl;
+        return os;
     }
 
 private: 
     date transactionDate;
     double amount;
     string transType;
-    string message
+    string message;
 };
 
 
