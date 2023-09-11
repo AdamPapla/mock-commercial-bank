@@ -16,10 +16,15 @@ public:
 	double getBal() const{
 		return balance;
 	}
+	int getAccountNum() const{
+		return accountNum;
+	}
 	void showBal() const{
 		cout << "Balance for " << holder << "'s account: " << balance << endl;
 	}
 	void deposit(double amount, date dDate, string message);
+	void withdraw(double amount, date dDate, string message);
+	void transfer(double amount, bankAccount targetAccount, date dDate, string message);
 private:
 	string holder;
 	int accountNum;
