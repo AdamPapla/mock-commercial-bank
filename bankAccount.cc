@@ -24,16 +24,18 @@ void bankAccount::withdraw(double amount, date dDate, string message){
     else if (amount > balance){
         throw invalid_argument("Withdrawal amount is greater than account balance");
     }
+    balance -= amount;
     transaction thisWithdrawal(dDate, amount, "withdrawal", message);
     history.push_back(thisWithdrawal);
     cout << "Withdrawing " << amount << " from account number " << accountNum << ". New balance "<< balance << endl;
 }
 
-void bankAccount::transfer(double amount, bankAccount targetAccount, date dDate, string message){
+void bankAccount::transfer(double amount, bankAccount &targetAccount, date dDate, string message){
     string withdrawalMessage = "Transfer to account num ";
-    withdrawalMessage += to_string(targetAccount.getAccountNum());
+    withdrawalMessage += to_string(targetAccount.getAccountNum()) + ": " + message;
     string depositMessage = "Transfer from account num ";
     depositMessage += to_string(accountNum);
+    depositMessage += ": " + message;
     try{
         withdraw(amount, dDate, withdrawalMessage);
         targetAccount.deposit(amount, dDate, depositMessage);

@@ -3,7 +3,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
-
+#include <iomanip>
 using namespace std;
 struct date{
     int day;
@@ -11,18 +11,17 @@ struct date{
     int year;
     date(int day, int month, int year) : day {day}, month{month}, year {year} {}
     friend ostream &operator<< (ostream &os, const date d) {
-        os << d.day << "/" << d.month << "/" << d.year;
+        os << d.day << "/" << d.month << "/" << setw(15) << left << d.year;
         return os;
     }
 };
 class transaction{
 public:
-    transaction(date tDate, double amount, string transType, string message) : transactionDate {tDate}, amount {amount}, message {message}{
-        cout << "Constructing transaction of amount " << amount << " on " << transactionDate << " with message "  << message << endl;
+    transaction(date tDate, double amount, string transType, string message) : transactionDate {tDate}, transType {transType}, amount {amount}, message {message}{
     }
 
     friend ostream &operator<< (ostream &os, const transaction t){
-        os << t.transactionDate << "\t" << t.transType << "\t" << t.message << "\t" << t.amount << endl;
+        os << t.transactionDate << setw(15) << left << t.transType << setw(50) << left << t.message << setw(10) << left << t.amount << endl;
         return os;
     }
 
