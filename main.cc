@@ -5,37 +5,42 @@
 #include "transaction.h"
 #include "bankAccount.h"
 using namespace std;
-
+// Initiate static variable number of accounts to 0
 int bankAccount::numAccounts = 0;
 int main(void){
-    date todaysDate(12,9,2023);
-    vector<bankAccount> accounts;
+    date todaysDate(12,9,2023); // Creating date object with todays date
+    vector<bankAccount> accounts; // Container to store bank account
     string firstName;
     string lastName;
     cout << "Welcome to Aughnish Bank\n_____________________________________\n\n" << 
     "For help, enter \"help\" to see a list of available options" << endl;
-
+    // Now read in from command line untiluser has finished entering commands
     while (true){
         cout << endl << "> ";
         string command;
         cin >> command;
-        if (command == "end")
+        if (command == "end")   // If user types end, break
             break;
+        // Opening account
         else if(command == "open"){
             int openBalance;
+            // Read in details from command line then construct bank account object
             cin >> firstName >> lastName >> openBalance;
             accounts.push_back(bankAccount (firstName+lastName, openBalance, todaysDate));
         }
+        // Deposit
         else if (command == "deposit"){
             int accountNum, amount;
             string message;
             cin >> accountNum >> amount;
             getline(cin, message);
+            // Check if account exists and is open
             if (accountNum < 0 || accountNum > accounts.size() || (accounts[accountNum]).getStatus() == 0){
                 cout << "Invalid account number entered. Account either does no exist or was closed" << endl;
                 continue;
             }
             else{
+                // Try to deposit, catching any exceptions
                 try{
                 accounts[accountNum].deposit(amount, todaysDate, message);}
                 catch(invalid_argument &e){
@@ -43,16 +48,19 @@ int main(void){
                 }
             }
         }
+        // Withdraw
         else if (command == "withdraw"){
             int accountNum, amount;
             string message;
             cin >> accountNum >> amount;
+            // Read in the remainder of the line into the message variable
             getline(cin, message);
             if (accountNum < 0 || accountNum > accounts.size() || (accounts[accountNum]).getStatus() == 0){
                 cout << "Invalid account number entered. Account either does no exist or was closed" << endl;
                 continue;
             }
             else{
+                // Attempt to withdraw. Will throw error if attempting to withdraw too much/ a negative numbe
                 try{
                 accounts[accountNum].withdraw(amount, todaysDate, message);}
                 catch(invalid_argument &e){
@@ -60,11 +68,13 @@ int main(void){
                 }
             }
         }
+        // Transfer
         else if (command == "transfer"){
             int sourceAccount, destAccount, amount;
             string message;
             cin >> sourceAccount >> destAccount >> amount;
             getline(cin, message);
+            // Check that source account and destination account exist and are open
             if (sourceAccount < 0 || sourceAccount > accounts.size() || (accounts[sourceAccount]).getStatus() == 0){
                 cout <<"Invalid source account for transfer. Account either does not exist or was closed"<< endl;
                 continue;
@@ -74,6 +84,7 @@ int main(void){
                 continue;
             }
             else{
+                // Perform the transfer
                 try{
                     accounts[sourceAccount].transfer(amount, accounts[destAccount], todaysDate, message);}
                 catch(invalid_argument& e){
@@ -81,6 +92,7 @@ int main(void){
                 }
             }
         }
+        //Display account history
         else if (command == "history"){
             int account;
             cin >> account;
@@ -91,9 +103,11 @@ int main(void){
             else{
                 accounts[account].showHistory();
             }
+            // Flush rest of line
             string junk;
             getline(cin, junk);
         }
+        // Close account
         else if (command == "close"){
             int account;
             cin >> account;
@@ -107,6 +121,7 @@ int main(void){
             string junk;
             getline(cin, junk); // Read in any extra characters as junk
         }
+        // Display all aopen accounts
         else if(command == "accounts"){
             for (bankAccount &a: accounts){
                 if (a.getStatus() == 1){
@@ -116,6 +131,7 @@ int main(void){
             string junk;
             getline(cin, junk);
         }
+        // Print available options for user, as well as their arguments
         else if (command == "help"){
             cout << "Options:" << endl <<
                     setw(20) << left << "Open account:" << setw(10) << left << "open" << setw(24) << left <<  "firstname" << setw(24) << left 
